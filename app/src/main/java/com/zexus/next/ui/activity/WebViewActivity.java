@@ -41,6 +41,28 @@ public class WebViewActivity extends NextBaseActivity {
         mWebView.loadUrl(mXmlLink);
     }
 
+    protected Dialog onCreateDialog(int id) {
+        if (id == 1000) {
+            return new AlertDialog.Builder(this).setItems(R.array.webTextSize, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    switch (whichButton) {
+                        case 0:
+                            mWebView.getSettings().setTextZoom(70);
+                            break;
+                        case 1:
+                            mWebView.getSettings().setTextZoom(100);
+                            break;
+                        case 2:
+                            mWebView.getSettings().setTextZoom(130);
+
+                    }
+                }
+            }).create();
+        }
+
+        return null;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.web_view_menu, menu);
@@ -60,6 +82,7 @@ public class WebViewActivity extends NextBaseActivity {
                 startActivity(shareIntent);
                 break;
             case R.id.action_textsize:
+                showDialog(1000);
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -43,10 +43,8 @@ public class XmlHandler extends DefaultHandler {
         if (mInItemLabel) {
             if (localName.equals("title")) {
                 mXMLTitile = mStringBuffer.toString();
-                Log.i(TAG, "mXMLTitile: " + mXMLTitile);
             } else if (localName.equals("link")) {
                 mXMLLink = mStringBuffer.toString();
-                Log.i(TAG, "mXMLLink: " + mXMLLink);
             } else if (localName.equals("item")) {
                 mInItemLabel = false;
                 XmlInfomation mXmlInfomation = new XmlInfomation(mXMLTitile, mXMLLink);
