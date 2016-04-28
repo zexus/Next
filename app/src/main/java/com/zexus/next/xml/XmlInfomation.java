@@ -9,6 +9,7 @@ public class XmlInfomation {
         this.mXmlLink = mXmlLink;
     }
 
+
     public String getXmlTitle() {
         return mXmlTitile;
     }

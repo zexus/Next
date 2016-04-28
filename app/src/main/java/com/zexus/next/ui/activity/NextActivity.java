@@ -1,6 +1,7 @@
 package com.zexus.next.ui.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,8 +9,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,11 +26,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.zexus.next.R;
 import com.zexus.next.base.NextBaseActivity;
 import com.zexus.next.base.NextBaseAdapter;
+import com.zexus.next.database.ItemListSqliteOpenHelper;
 import com.zexus.next.flip.FlipViewController;
 import com.zexus.next.xml.XmlInfomation;
 import com.zexus.next.xml.XmlParser;
@@ -39,6 +44,7 @@ public class NextActivity extends NextBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final String TAG = "NextActivity";
     FlipViewController mFlipViewController;
+    NextBaseAdapter mNextBaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +53,33 @@ public class NextActivity extends NextBaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mNextBaseAdapter = super.getNextBaseAdapter();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder mAlertDialogBuilder = new AlertDialog.Builder(NextActivity.this);
+                final View mView = getLayoutInflater().inflate(R.layout.content_new_item, null);
+                mAlertDialogBuilder.setView(mView).setTitle("请输入订阅链接").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText mEditText = (EditText)mView.findViewById(R.id.content_new_item);
+                        String mURL = mEditText.getText().toString();
+                        XmlParser mXmlParser = new XmlParser(NextActivity.this, mURL, mNextBaseAdapter);
+                        mXmlParser.start();
+                        ItemListSqliteOpenHelper mItemListSqliteOpenHelper = new ItemListSqliteOpenHelper(NextActivity.this);
+//                        mItemListSqliteOpenHelper.addItem();
+                    }
+                });
+
+                mAlertDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                mAlertDialogBuilder.show();
             }
         });
 

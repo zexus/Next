@@ -35,6 +35,7 @@ public class WebViewActivity extends NextBaseActivity {
             mXmlLink = mBundle.getString("mXmlLink");
             actionBar.setTitle(mXmlTitile);
         }
+
         mWebView = (WebView) findViewById(R.id.webview);
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.getSettings().setJavaScriptEnabled(true);
