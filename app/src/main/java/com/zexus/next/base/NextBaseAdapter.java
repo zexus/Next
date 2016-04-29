@@ -1,19 +1,15 @@
 package com.zexus.next.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zexus.next.R;
-import com.zexus.next.flip.FlipViewController;
 import com.zexus.next.xml.XmlInfomation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NextBaseAdapter extends ArrayAdapter<XmlInfomation> {
@@ -44,20 +40,24 @@ public class NextBaseAdapter extends ArrayAdapter<XmlInfomation> {
 
     private static class ViewHolder {
         TextView mTextViewTitle;
+        TextView mTextViewDescription;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView ==  null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_no_image, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_without_image, null);
             mViewHolder = new ViewHolder();
+
             mViewHolder.mTextViewTitle = (TextView)convertView.findViewById(R.id.titleTextView);
+            mViewHolder.mTextViewDescription = (TextView)convertView.findViewById(R.id.descriptionTextView);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder)convertView.getTag();
         }
 
         mViewHolder.mTextViewTitle.setText(getItem(position).getXmlTitle());
+        mViewHolder.mTextViewDescription.setText(getItem(position).getXmlDescription());
         return convertView;
     }
 }

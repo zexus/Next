@@ -117,7 +117,6 @@ public class NextActivity extends NextBaseActivity
     public class updateUI implements Runnable {
         @Override
         public void run() {
-            Toast.makeText(NextActivity.this, "你好",  Toast.LENGTH_LONG).show();
         }
     }
 
