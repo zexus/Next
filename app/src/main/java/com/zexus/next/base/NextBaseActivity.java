@@ -1,13 +1,16 @@
 package com.zexus.next.base;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.zexus.next.R;
 import com.zexus.next.xml.XmlInfomation;
@@ -41,10 +44,11 @@ public class NextBaseActivity extends ActionBarActivity {
         mHandler = new Handler();
         mXmlInfomation = new ArrayList<>();
         mNextBaseAdapter = new NextBaseAdapter(this, 0, mXmlInfomation);
-
-        XmlParser mXmlParser = new XmlParser(this, "http://www.ithome.com/rss/", mNextBaseAdapter);
-        mXmlParser.start();
     }
 
+    public void xmlParserWrap(String url) {
+        XmlParser mXmlParser = new XmlParser(this, url, mNextBaseAdapter);
+        mXmlParser.start();
+    }
 
 }

@@ -28,12 +28,14 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.zexus.next.R;
 import com.zexus.next.base.NextBaseActivity;
 import com.zexus.next.base.NextBaseAdapter;
 import com.zexus.next.database.ItemListSqliteOpenHelper;
 import com.zexus.next.flip.FlipViewController;
+import com.zexus.next.xml.XmlHandler;
 import com.zexus.next.xml.XmlInfomation;
 import com.zexus.next.xml.XmlParser;
 
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NextActivity extends NextBaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, XmlHandler.ParseHandlerCallbacks {
     private final String TAG = "NextActivity";
     FlipViewController mFlipViewController;
     NextBaseAdapter mNextBaseAdapter;
@@ -63,12 +65,8 @@ public class NextActivity extends NextBaseActivity
                 mAlertDialogBuilder.setView(mView).setTitle("请输入订阅链接").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText mEditText = (EditText)mView.findViewById(R.id.content_new_item);
-                        String mURL = mEditText.getText().toString();
-                        XmlParser mXmlParser = new XmlParser(NextActivity.this, mURL, mNextBaseAdapter);
-                        mXmlParser.start();
-                        ItemListSqliteOpenHelper mItemListSqliteOpenHelper = new ItemListSqliteOpenHelper(NextActivity.this);
-//                        mItemListSqliteOpenHelper.addItem();
+                        String mURL = ((EditText)mView.findViewById(R.id.content_new_item)).getText().toString();
+                        xmlParserWrap(mURL);
                     }
                 });
 
@@ -109,6 +107,18 @@ public class NextActivity extends NextBaseActivity
         /*mFlipViewController = new FlipViewController(this, FlipViewController.VERTICAL);
         mFlipViewController.setAdapter(super.getNextBaseAdapter());
         setContentView(mFlipViewController);*/
+    }
+
+    @Override
+    public void notifyUiUpdate() {
+        getHandler().post(new updateUI());
+    }
+
+    public class updateUI implements Runnable {
+        @Override
+        public void run() {
+            Toast.makeText(NextActivity.this, "你好",  Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
