@@ -14,14 +14,13 @@ public class ItemListSqliteOpenHelper {
         mNextSqliteDataBase = new NextSqliteDataBase(context, "com.zexus.next", null, 1);
     }
 
-    public long addItem(String name, String url, String link) {
+    public long addItem(String name, String url) {
         SQLiteDatabase mSQLiteDatabase = mNextSqliteDataBase.getWritableDatabase();
         Cursor mCursor = mSQLiteDatabase.query(mNextSqliteDataBase.ITEM_DETAIL, null, "name=?", new String[]{name}, null, null, null);
         if (mCursor.getCount() == 0) {
             ContentValues mContentValues = new ContentValues();
             mContentValues.put("name", name);
             mContentValues.put("url", url);
-            mContentValues.put("link", link);
             return mSQLiteDatabase.insert(mNextSqliteDataBase.ITEM_DETAIL, null, mContentValues);
         } else {
             mCursor.close();

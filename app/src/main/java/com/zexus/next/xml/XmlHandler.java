@@ -14,6 +14,9 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XmlHandler extends DefaultHandler {
     private final String TAG = "XmlHandler";
     private boolean mInItemLabel = false;
+    private boolean mInImageLabel = false;
+    private String mRSSTitle;
+    private String mRSSImageUrl;
     private String mXMLTitile;
     private String mXMLLink;
     private String mXMLDescription;
@@ -38,6 +41,9 @@ public class XmlHandler extends DefaultHandler {
         if (localName.equals("item")) {
             mInItemLabel = true;
             mXMLTitile = mXMLLink = mXMLDescription = "";
+        } else if (localName.equals("image")) {
+            mInImageLabel = true;
+            mRSSTitle = mRSSImageUrl = "";
         }
     }
 
@@ -52,9 +58,13 @@ public class XmlHandler extends DefaultHandler {
                 mXMLDescription = mStringBuffer.toString();
             } else if (localName.equals("item")) {
                 mInItemLabel = false;
-                XmlInfomation mXmlInfomation = new XmlInfomation(mXMLTitile, mXMLLink, mXMLDescription);
+                XmlInfomation mXmlInfomation = new XmlInfomation(mRSSTitle, mRSSImageUrl, mXMLTitile, mXMLLink, mXMLDescription);
                 mNextBaseActivity.getHandler().post(new elementBringUp(mXmlInfomation));
             }
+        } else if (mInImageLabel) {
+            if (localName.equals("title")) mRSSTitle = mStringBuffer.toString();
+            if (localName.equals("url")) mRSSImageUrl = mStringBuffer.toString();
+            mParseHandlerCallbacks.notifyNewTitle(mRSSTitle, mRSSImageUrl);
         }
     }
 
@@ -78,5 +88,6 @@ public class XmlHandler extends DefaultHandler {
 
     public interface ParseHandlerCallbacks {
         void notifyUiUpdate();
+        void notifyNewTitle(String title, String imageurl);
     }
 }

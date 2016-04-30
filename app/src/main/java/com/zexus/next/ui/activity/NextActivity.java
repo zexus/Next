@@ -45,6 +45,7 @@ import java.util.List;
 public class NextActivity extends NextBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, XmlHandler.ParseHandlerCallbacks {
     private final String TAG = "NextActivity";
+    private String mItemUrl;
     FlipViewController mFlipViewController;
     NextBaseAdapter mNextBaseAdapter;
 
@@ -65,8 +66,8 @@ public class NextActivity extends NextBaseActivity
                 mAlertDialogBuilder.setView(mView).setTitle("请输入订阅链接").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String mURL = ((EditText)mView.findViewById(R.id.content_new_item)).getText().toString();
-                        xmlParserWrap(mURL);
+                        mItemUrl = ((EditText)mView.findViewById(R.id.content_new_item)).getText().toString();
+                        xmlParserWrap(mItemUrl);
                     }
                 });
 
@@ -112,6 +113,14 @@ public class NextActivity extends NextBaseActivity
     @Override
     public void notifyUiUpdate() {
         getHandler().post(new updateUI());
+    }
+
+    @Override
+    public void notifyNewTitle(String title, String imageurl) {
+        ItemListSqliteOpenHelper mItemListSqliteOpenHelper = new ItemListSqliteOpenHelper(this);
+        if (mItemListSqliteOpenHelper.addItem(title, mItemUrl) != -1) {
+
+        }
     }
 
     public class updateUI implements Runnable {
