@@ -1,6 +1,8 @@
 package com.zexus.next.xml;
 
 import android.content.Context;
+import android.os.Looper;
+import android.widget.Toast;
 
 import com.zexus.next.base.NextBaseActivity;
 import com.zexus.next.base.NextBaseAdapter;
@@ -34,6 +36,9 @@ public class XmlParser extends Thread {
             InputStream mInputStream = mURLConnection.getInputStream();
             parse(mInputStream);
         } catch (Exception e) {
+            Looper.prepare();
+            Toast.makeText(mNextBaseActivity, "请输入正确链接", Toast.LENGTH_LONG).show();
+            Looper.loop();
             e.printStackTrace();
         }
     }
@@ -43,6 +48,9 @@ public class XmlParser extends Thread {
             SAXParser mSAXParser = SAXParserFactory.newInstance().newSAXParser();
             mSAXParser.parse(inputStream, new XmlHandler(mNextBaseActivity, mNextBaseAdapter));
         } catch (Exception e) {
+            Looper.prepare();
+            Toast.makeText(mNextBaseActivity, "无法解析链接", Toast.LENGTH_LONG).show();
+            Looper.loop();
             e.printStackTrace();
         }
     }

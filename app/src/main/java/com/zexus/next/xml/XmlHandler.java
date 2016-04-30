@@ -54,9 +54,6 @@ public class XmlHandler extends DefaultHandler {
                 mInItemLabel = false;
                 XmlInfomation mXmlInfomation = new XmlInfomation(mXMLTitile, mXMLLink, mXMLDescription);
                 mNextBaseActivity.getHandler().post(new elementBringUp(mXmlInfomation));
-                if (mParseHandlerCallbacks != null) {
-                    mParseHandlerCallbacks.notifyUiUpdate();
-                }
             }
         }
     }
