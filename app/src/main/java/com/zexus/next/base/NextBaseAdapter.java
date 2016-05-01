@@ -50,6 +50,7 @@ public class NextBaseAdapter extends ArrayAdapter<XmlInfomation> {
             mViewHolder = new ViewHolder();
 
             mViewHolder.mTextViewTitle = (TextView)convertView.findViewById(R.id.titleTextView);
+            mViewHolder.mTextViewTitle.getPaint().setFakeBoldText(true);
             mViewHolder.mTextViewDescription = (TextView)convertView.findViewById(R.id.descriptionTextView);
             convertView.setTag(mViewHolder);
         } else {
